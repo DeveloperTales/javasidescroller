@@ -40,7 +40,7 @@ public class Obstacle {
     private void createObstacle() {        
         switch (rand.nextInt(3)) {
             case 1 -> {
-                sprite = new ImageIcon("src/resources/spikes.png").getImage();
+                sprite = new ImageIcon("src/resources/torch.gif").getImage();
                 height = sprite.getHeight(null);
                 width = sprite.getWidth(null);
             }
@@ -50,7 +50,7 @@ public class Obstacle {
                 width = sprite.getWidth(null);
             }
         }
-        y -= 50;
+        y -= 30;
         y -= height;
     }
 }

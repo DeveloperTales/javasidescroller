@@ -19,7 +19,7 @@ public class PlayerDog {
     private final long frameDelay = 100; // milliseconds between frames
     private final int totalFrames = 5; // Assuming 5 frames in the sprite sheet
     private int y;
-    private int groundLevel = 800 - 50;
+    private int groundLevel = 600 - 30;
     private int currentFrame = 4; // Start with the last frame since this sprite is in reverse order
     private long lastFrameTime;
     private int yVelocity = 0;

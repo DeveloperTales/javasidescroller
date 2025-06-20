@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
@@ -37,11 +39,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private int speed = 5; // Speed of obstacles
 
     public GamePanel() {
-        setPreferredSize(new Dimension(1360, 800));
+        setPreferredSize(new Dimension(800, 600));
         setBackground(Color.WHITE);
         setFocusable(true);
         addKeyListener(this);
-        player = new PlayerDog(200, 300);
+        player = new PlayerDog(100, 600 - 30);
         obstacles = new ArrayList<>();
         rand = new Random();
         timer = new Timer(1000 / FPS, this);
@@ -50,6 +52,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         treesLayer = new BackGroundLayer("src/resources/trees_02.png", 2);
         treesLayer2 = new BackGroundLayer("src/resources/trees.png", 3);
         groundLayer = new BackGroundLayer("src/resources/ground.png", speed);
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "exit");
+        getActionMap().put("exit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
     }
 
     public void startGame() {
@@ -140,13 +149,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_R && gameOver) {
             restartGame();
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            System.exit(0);
+        }
     }
 
     @Override public void keyReleased(KeyEvent e) {}
     @Override public void keyTyped(KeyEvent e) {}
 
     private void restartGame() {
-        player = new PlayerDog(200, 300);
+        player = new PlayerDog(100, getHeight() - 30);
         obstacles.clear();
         obstacleTimer = 0;
         gameOver = false;
