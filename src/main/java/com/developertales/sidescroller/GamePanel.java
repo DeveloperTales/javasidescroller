@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private final BackGroundLayer treesLayer;
     private final BackGroundLayer treesLayer2;
     private final BackGroundLayer groundLayer;
-    private Player player;
+    private PlayerDog player;
     private int obstacleTimer = 0;
     private boolean gameOver = false;
     private int score = 0;
@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         setBackground(Color.WHITE);
         setFocusable(true);
         addKeyListener(this);
-        player = new Player(100, 300, 50, 50);
+        player = new PlayerDog(200, 300);
         obstacles = new ArrayList<>();
         rand = new Random();
         timer = new Timer(1000 / FPS, this);
@@ -49,7 +49,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         mountainsLayer = new BackGroundLayer("src/resources/mountains.png", 1);
         treesLayer = new BackGroundLayer("src/resources/trees_02.png", 2);
         treesLayer2 = new BackGroundLayer("src/resources/trees.png", 3);
-        groundLayer = new BackGroundLayer("src/resources/ground.png", 4);
+        groundLayer = new BackGroundLayer("src/resources/ground.png", speed);
     }
 
     public void startGame() {
@@ -146,7 +146,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override public void keyTyped(KeyEvent e) {}
 
     private void restartGame() {
-        player = new Player(100, 300, 50, 50);
+        player = new PlayerDog(200, 300);
         obstacles.clear();
         obstacleTimer = 0;
         gameOver = false;
