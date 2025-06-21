@@ -18,6 +18,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+/* 
+ * Represents the main game panel for the side-scrolling game.
+ * It handles the game loop, player input, obstacle generation, and rendering.
+ */
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private final Timer timer;
     private final int FPS = 60;
@@ -41,13 +45,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     public GamePanel() {
         setPreferredSize(new Dimension(800, 600));
-        setBackground(Color.WHITE);
+        setBackground(Color.GRAY);
         setFocusable(true);
-        addKeyListener(this);
-        player = new PlayerDog(100, 600 - 30);
-        obstacles = new ArrayList<>();
         rand = new Random();
         timer = new Timer(1000 / FPS, this);
+        // Initialize player,obstacles and background layers
+        player = new PlayerDog(100);
+        obstacles = new ArrayList<>();
         backgroundImage = new ImageIcon("src/resources/background.png").getImage();
         mountainsLayer = new BackGroundLayer("src/resources/mountains.png");
         treesLayer = new BackGroundLayer("src/resources/trees_02.png");
@@ -56,6 +60,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     }
 
     public void startGame() {
+        addKeyListener(this);
         timer.start();
     }
 
@@ -65,17 +70,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
         // Update score
         scoreTimer++;
-        if (scoreTimer >= 10) { // Increase score every 10 frames (~6 times per second)
+        // Increase score every 10 frames (~6 times per second)
+        if (scoreTimer >= 10) { 
             score++;
             scoreTimer = 0;
             canUpdateSpeed = true;
         }
-
-        if (canUpdateSpeed && score % 100 == 0 && score > 0) { // Increase speed every 100 points
+        // Increase speed every 100 points
+        if (canUpdateSpeed && score % 100 == 0 && score > 0) { 
             speed++;
             canUpdateSpeed = false;
         }
-
         // Update player
         player.update();
         // Spawn obstacles
@@ -85,13 +90,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             obstacles.add(new Obstacle(getWidth(), getHeight()));
             obstacle_interval = rand.nextInt(obstacle_min_interval , obstacle_max_interval);
         }
-
-        // Update backgrounds
-        mountainsLayer.update(getWidth(), speed - 3);
-        treesLayer.update(getWidth(), speed - 2);
-        treesLayer2.update(getWidth(), speed - 1);
-        groundLayer.update(getWidth(), speed);
-
         // Update obstacles and check for collisions
         Iterator<Obstacle> iter = obstacles.iterator();
         while (iter.hasNext()) {
@@ -109,6 +107,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                 break;
             }
         }
+        // Update backgrounds
+        mountainsLayer.update(getWidth(), speed - 3);
+        treesLayer.update(getWidth(), speed - 2);
+        treesLayer2.update(getWidth(), speed - 1);
+        groundLayer.update(getWidth(), speed);
 
         repaint();
     }
@@ -136,10 +139,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             g.drawString("Press 'R' to Restart", 310, 220);
         }
 
+        // Draw score
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Score: " + score, 10, 25);
-        g.drawString("Speed: " + speed, 10, 50);
     }
 
     @Override
@@ -161,7 +164,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override public void keyTyped(KeyEvent e) {}
 
     private void restartGame() {
-        player = new PlayerDog(100, getHeight() - 30);
+        player = new PlayerDog(100);
         obstacles.clear();
         obstacleTimer = 0;
         gameOver = false;
@@ -170,7 +173,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         speed = 5;
         obstacle_interval = 90;
         timer.start();
-        
     }
 
 }

@@ -1,7 +1,6 @@
 package com.developertales.sidescroller;
 // This file is part of the Developer Tales Side Scroller Game project.
 // It is a simple side-scrolling game where obstacles appear and the player can jump over them
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -9,6 +8,10 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Represents an obstacle in the side-scrolling game.
+ * Obstacles can be of different types and are randomly generated.
+ */
 public class Obstacle {
     private int x, y, width, height;
     private final Random rand = new Random();
@@ -30,8 +33,6 @@ public class Obstacle {
 
     public void draw(Graphics g) {
         g.drawImage(sprite, x, y, width, height, null);
-        g.setColor(Color.RED);
-        g.drawRect(x, y, width, height);
     }
 
     public Rectangle getBounds() {
@@ -41,7 +42,7 @@ public class Obstacle {
     private void createObstacle() {        
         switch (rand.nextInt(5)) {
             case 1 -> {
-                sprite = new ImageIcon("src/resources/stump.jpg").getImage();
+                sprite = new ImageIcon("src/resources/stump.png").getImage();
             }
             case 2 -> {
                 sprite = new ImageIcon("src/resources/bush.png").getImage();

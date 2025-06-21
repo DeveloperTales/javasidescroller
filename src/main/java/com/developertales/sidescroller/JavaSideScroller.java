@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.developertales.sidescroller;
 import javax.swing.JFrame;
 
 /**
- *
- * @author swart
+ * Main class to run the side-scrolling game.
+ * It initializes the game window and starts the game loop.
  */
 public class JavaSideScroller {
 

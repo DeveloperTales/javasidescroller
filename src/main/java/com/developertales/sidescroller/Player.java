@@ -6,11 +6,18 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+/**
+ * Represents the player character in the side-scrolling game.
+ * The player can jump and is represented as a rectangle.
+ */
 public class Player {
-    private int x, y, width, height;
-    private int yVelocity = 0;
+    private final int x;
+    private final int width;
+    private final int height;
     private final int gravity = 1;
     private final int jumpStrength = -20;
+    private int y;
+    private int yVelocity = 0;
     private int groundLevel = 800 - 50;
 
     public Player(int x, int y, int width, int height) {

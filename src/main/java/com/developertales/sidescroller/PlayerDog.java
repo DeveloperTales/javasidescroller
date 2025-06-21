@@ -1,7 +1,6 @@
 package com.developertales.sidescroller;
 // This file is part of the Developer Tales Side Scroller Game project.
 // It is a simple side-scrolling game where obstacles appear and the player can jump over them
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -9,6 +8,10 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
+/*
+ * Represents the player character in the side-scrolling game.
+ * The player is a dog that can jump and is animated using a sprite sheet.
+ */
 public class PlayerDog {
 
     private final int x;
@@ -27,13 +30,14 @@ public class PlayerDog {
     private long lastFrameTime;
     private int yVelocity = 0;
 
-    public PlayerDog(int x, int y) {
+    public PlayerDog(int x) {
         this.x = x;
-        this.y = y;
+        this.y = 200;
         spriteSheet = new ImageIcon("src/resources/wolf_run.png").getImage();
         frameWidth = spriteSheet.getWidth(null) / totalFrames;
         frameHeight = spriteSheet.getHeight(null);
-        groundLevel -= frameHeight; // Adjust ground level based on player height
+        // Adjust ground level based on player height
+        groundLevel -= frameHeight;
         lastFrameTime = System.currentTimeMillis();
     }
 
@@ -73,11 +77,11 @@ public class PlayerDog {
         int sx = currentFrame * frameWidth;
         g.drawImage(spriteSheet, x, y, x + frameWidth, y + frameHeight, 
             sx, 0, sx + frameWidth, frameHeight, null);
-        g.setColor(Color.GREEN);
-        g.drawRect(x + reduceX, y + reducedY, frameWidth - (2 * reduceX), frameHeight - (2 * reducedY));
     }
 
     public Rectangle getBounds() {
+        // Adjust the rectangle to account for reduced collision area
+        // This helps to avoid false positives in collision detection
         return new Rectangle(x + reduceX, y + reducedY, frameWidth - (2 * reduceX), frameHeight - (2 * reducedY));
     }
 }

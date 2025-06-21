@@ -1,12 +1,14 @@
 package com.developertales.sidescroller;
 // This file is part of the Developer Tales Side Scroller Game project.
 // It is a simple side-scrolling game where obstacles appear and the player can jump over them
-
 import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
-
+/*
+ * Represents a background layer in the side-scrolling game.
+ * It handles the drawing and updating of the background image.
+ */
 public class BackGroundLayer{
     private final Image backgroundImage;
     private int x = 0;
