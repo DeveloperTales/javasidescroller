@@ -8,13 +8,11 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class BackGroundLayer{
-    private final int loopSpeed;
     private final Image backgroundImage;
     private int x = 0;
 
-    public BackGroundLayer(String image, int loopSpeed) {
+    public BackGroundLayer(String image) {
         backgroundImage = new ImageIcon(image).getImage();
-        this.loopSpeed = loopSpeed;
     }
 
     public void draw(Graphics g, int screenWidth, int screenHeight) {
@@ -22,9 +20,9 @@ public class BackGroundLayer{
         g.drawImage(backgroundImage, x + screenWidth, 0, screenWidth, screenHeight, null);
     }
 
-    public void update(int screenWidth) {
+    public void update(int screenWidth, int speed) {
         // Loop backgrounds
-        x -= loopSpeed;
+        x -= speed;
         if (x <= -screenWidth){
             x = 0;
         }

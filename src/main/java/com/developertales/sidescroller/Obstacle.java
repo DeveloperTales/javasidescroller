@@ -1,6 +1,7 @@
 package com.developertales.sidescroller;
 // This file is part of the Developer Tales Side Scroller Game project.
 // It is a simple side-scrolling game where obstacles appear and the player can jump over them
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -10,18 +11,16 @@ import javax.swing.ImageIcon;
 
 public class Obstacle {
     private int x, y, width, height;
-    private final int speed;
     private final Random rand = new Random();
     private Image sprite;
 
-    public Obstacle(int x, int y, int speed) {
+    public Obstacle(int x, int y) {
         this.x = x;
         this.y = y;
-        this.speed = speed;
         createObstacle();
     }
 
-    public void update() {
+    public void update(int speed) {
         x -= speed;
     }
 
@@ -31,6 +30,8 @@ public class Obstacle {
 
     public void draw(Graphics g) {
         g.drawImage(sprite, x, y, width, height, null);
+        g.setColor(Color.RED);
+        g.drawRect(x, y, width, height);
     }
 
     public Rectangle getBounds() {
@@ -38,18 +39,26 @@ public class Obstacle {
     }
 
     private void createObstacle() {        
-        switch (rand.nextInt(3)) {
+        switch (rand.nextInt(5)) {
             case 1 -> {
+                sprite = new ImageIcon("src/resources/stump.jpg").getImage();
+            }
+            case 2 -> {
+                sprite = new ImageIcon("src/resources/bush.png").getImage();
+            }
+            case 3 -> {
+                sprite = new ImageIcon("src/resources/tree.png").getImage();
+            }
+            case 4 -> {
                 sprite = new ImageIcon("src/resources/torch.gif").getImage();
-                height = sprite.getHeight(null);
-                width = sprite.getWidth(null);
             }
             default -> {
                 sprite = new ImageIcon("src/resources/spikes.png").getImage();
-                height = sprite.getHeight(null);
-                width = sprite.getWidth(null);
             }
         }
+
+        height = sprite.getHeight(null);
+        width = sprite.getWidth(null);
         y -= 30;
         y -= height;
     }

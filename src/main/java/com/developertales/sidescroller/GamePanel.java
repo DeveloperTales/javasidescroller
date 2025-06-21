@@ -14,29 +14,30 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private final Timer timer;
     private final int FPS = 60;
-    private final ArrayList<Obstacle> obstacles;
-    private final int OBSTACLE_INTERVAL = 90; // frames
+    private final ArrayList<Obstacle> obstacles;    
     private final Random rand;
     private final Image backgroundImage;
     private final BackGroundLayer mountainsLayer;
     private final BackGroundLayer treesLayer;
     private final BackGroundLayer treesLayer2;
     private final BackGroundLayer groundLayer;
+    private final int obstacle_min_interval = 40; // frames
+    private final int obstacle_max_interval = 90; // frames
     private PlayerDog player;
     private int obstacleTimer = 0;
     private boolean gameOver = false;
     private int score = 0;
     private int scoreTimer = 0;
     private int speed = 5; // Speed of obstacles
+    private int obstacle_interval = 90; // frames
+    private boolean canUpdateSpeed = true;
 
     public GamePanel() {
         setPreferredSize(new Dimension(800, 600));
@@ -48,17 +49,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         rand = new Random();
         timer = new Timer(1000 / FPS, this);
         backgroundImage = new ImageIcon("src/resources/background.png").getImage();
-        mountainsLayer = new BackGroundLayer("src/resources/mountains.png", 1);
-        treesLayer = new BackGroundLayer("src/resources/trees_02.png", 2);
-        treesLayer2 = new BackGroundLayer("src/resources/trees.png", 3);
-        groundLayer = new BackGroundLayer("src/resources/ground.png", speed);
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "exit");
-        getActionMap().put("exit", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        mountainsLayer = new BackGroundLayer("src/resources/mountains.png");
+        treesLayer = new BackGroundLayer("src/resources/trees_02.png");
+        treesLayer2 = new BackGroundLayer("src/resources/trees.png");
+        groundLayer = new BackGroundLayer("src/resources/ground.png");
     }
 
     public void startGame() {
@@ -74,28 +68,35 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         if (scoreTimer >= 10) { // Increase score every 10 frames (~6 times per second)
             score++;
             scoreTimer = 0;
+            canUpdateSpeed = true;
+        }
+
+        if (canUpdateSpeed && score % 100 == 0 && score > 0) { // Increase speed every 100 points
+            speed++;
+            canUpdateSpeed = false;
         }
 
         // Update player
         player.update();
         // Spawn obstacles
         obstacleTimer++;
-        if (obstacleTimer >= OBSTACLE_INTERVAL) {
+        if (obstacleTimer >= obstacle_interval) {
             obstacleTimer = 0;
-            obstacles.add(new Obstacle(getWidth(), getHeight(), speed));
+            obstacles.add(new Obstacle(getWidth(), getHeight()));
+            obstacle_interval = rand.nextInt(obstacle_min_interval , obstacle_max_interval);
         }
 
         // Update backgrounds
-        mountainsLayer.update(getWidth());
-        treesLayer.update(getWidth());
-        treesLayer2.update(getWidth());
-        groundLayer.update(getWidth());
+        mountainsLayer.update(getWidth(), speed - 3);
+        treesLayer.update(getWidth(), speed - 2);
+        treesLayer2.update(getWidth(), speed - 1);
+        groundLayer.update(getWidth(), speed);
 
         // Update obstacles and check for collisions
         Iterator<Obstacle> iter = obstacles.iterator();
         while (iter.hasNext()) {
             Obstacle obs = iter.next();
-            obs.update();
+            obs.update(speed);
             if (obs.isOffScreen()) {
                 iter.remove();
             }
@@ -138,6 +139,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Score: " + score, 10, 25);
+        g.drawString("Speed: " + speed, 10, 50);
     }
 
     @Override
@@ -165,6 +167,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         gameOver = false;
         score = 0;
         scoreTimer = 0;
+        speed = 5;
+        obstacle_interval = 90;
         timer.start();
         
     }

@@ -1,6 +1,7 @@
 package com.developertales.sidescroller;
 // This file is part of the Developer Tales Side Scroller Game project.
 // It is a simple side-scrolling game where obstacles appear and the player can jump over them
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -18,6 +19,8 @@ public class PlayerDog {
     private final Image spriteSheet;
     private final long frameDelay = 100; // milliseconds between frames
     private final int totalFrames = 5; // Assuming 5 frames in the sprite sheet
+    private final int reducedY = 10; // Adjust the height for better collision detection
+    private final int reduceX = 10; // Adjust the width for better collision detection 
     private int y;
     private int groundLevel = 600 - 30;
     private int currentFrame = 4; // Start with the last frame since this sprite is in reverse order
@@ -70,10 +73,11 @@ public class PlayerDog {
         int sx = currentFrame * frameWidth;
         g.drawImage(spriteSheet, x, y, x + frameWidth, y + frameHeight, 
             sx, 0, sx + frameWidth, frameHeight, null);
-
+        g.setColor(Color.GREEN);
+        g.drawRect(x + reduceX, y + reducedY, frameWidth - (2 * reduceX), frameHeight - (2 * reducedY));
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, frameWidth, frameHeight);
+        return new Rectangle(x + reduceX, y + reducedY, frameWidth - (2 * reduceX), frameHeight - (2 * reducedY));
     }
 }
