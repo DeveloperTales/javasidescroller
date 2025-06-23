@@ -46,20 +46,30 @@ public class Obstacle {
             }
             case 2 -> {
                 sprite = new ImageIcon("src/resources/bush.png").getImage();
+                height = 50;
+                width = 50;
             }
             case 3 -> {
                 sprite = new ImageIcon("src/resources/tree.png").getImage();
+                height = 50;
+                width = 50;
             }
             case 4 -> {
                 sprite = new ImageIcon("src/resources/torch.gif").getImage();
             }
             default -> {
                 sprite = new ImageIcon("src/resources/spikes.png").getImage();
+                height = 50;
+                width = 50;
             }
         }
 
-        height = sprite.getHeight(null);
-        width = sprite.getWidth(null);
+        if (height == 0 || width == 0) {
+            // If the sprite dimensions are not set, use image values
+            height = sprite.getHeight(null);
+            width = sprite.getWidth(null);
+        }
+
         y -= 30;
         y -= height;
     }
