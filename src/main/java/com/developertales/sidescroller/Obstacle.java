@@ -56,6 +56,8 @@ public class Obstacle {
             }
             case 4 -> {
                 sprite = new ImageIcon("src/resources/torch.gif").getImage();
+                height = 64;
+                width = 32;
             }
             default -> {
                 sprite = new ImageIcon("src/resources/spikes.png").getImage();
